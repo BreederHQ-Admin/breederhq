@@ -1,20 +1,24 @@
 {
-  "name": "breederhq-monorepo",
+  "name": "breederhq",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "build": "npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build",
-    "dev:contacts": "npm run -w @bhq/contacts dev",
-    "dev:animals": "npm run -w @bhq/animals dev",
-    "dev:breeding": "npm run -w @bhq/breeding dev",
-    "preview:contacts": "npm run -w @bhq/contacts preview",
-    "preview:animals": "npm run -w @bhq/animals preview",
-    "preview:breeding": "npm run -w @bhq/breeding preview"
+    "dev:animals": "npm run dev -w apps/animals",
+    "dev:breeding": "npm run dev -w apps/breeding",
+    "dev:contacts": "npm run dev -w apps/contacts",
+    "dev:all": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
+    "dev": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
+    "build": "npm run build --workspaces",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\""
   },
   "devDependencies": {
-    "typescript": "^5.6.2"
+    "concurrently": "^8.2.2",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.4",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
   }
 }
