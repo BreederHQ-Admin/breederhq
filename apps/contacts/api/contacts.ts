@@ -1,40 +1,59 @@
-// apps/contacts/api/contacts.js
-export default async function handler(req, res) {
-  const API_BASE = process.env.BHQ_API_BASE_URL;   // e.g. https://breederhq-api.onrender.com/api/v1
-  const ADMIN    = process.env.BHQ_ADMIN_TOKEN;    // your Render ADMIN_TOKEN
+// apps/contacts/api/contacts.ts
+// Vercel Node Function (TypeScript) with zero external typings.
+// Works without @vercel/node and without @types/node.
+
+export default async function handler(req: any, res: any) {
+  // Read env safely without needing Node types
+  const env = ((globalThis as any).process?.env ?? {}) as Record<string, string | undefined>;
+  const API_BASE = env.BHQ_API_BASE_URL;   // e.g. https://breederhq-api.onrender.com/api/v1
+  const ADMIN    = env.BHQ_ADMIN_TOKEN;    // the Render ADMIN_TOKEN
 
   if (!API_BASE || !ADMIN) {
-    res.status(500).json({ error: "server_not_configured" });
+    res.statusCode = 500;
+    res.setHeader("content-type", "application/json");
+    res.end(JSON.stringify({ error: "server_not_configured" }));
     return;
   }
 
-  // Build upstream URL (forward query params)
-  const url = new URL(`${API_BASE}/contacts`);
-  if (req.query) {
-    for (const [k, v] of Object.entries(req.query)) {
-      url.searchParams.set(k, String(v));
-    }
+  // Preflight (just in case)
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    res.end();
+    return;
   }
 
-  // Prepare request to API
-  const init = {
-    method: req.method,
-    headers: {
-      authorization: `Bearer ${ADMIN}`,
-    },
+  // Build upstream URL and forward query params
+  const url = new URL(`${API_BASE}/contacts`);
+  const query = req.query ?? {};
+  for (const [k, v] of Object.entries(query)) {
+    url.searchParams.set(k, String(v));
+  }
+
+  // Prepare upstream request
+  const headers: Record<string, string> = {
+    authorization: `Bearer ${ADMIN}`,
   };
 
-  // Forward JSON body for non-GET/HEAD
+  // Forward content-type for non-GET/HEAD
+  let body: any = undefined;
   if (req.method !== "GET" && req.method !== "HEAD") {
-    init.headers["content-type"] = req.headers["content-type"] || "application/json";
-    // Vercel parses req.body for JSON already; fall back to raw if needed
-    init.body = typeof req.body === "string" ? req.body : JSON.stringify(req.body || {});
+    const ct = (req.headers?.["content-type"] as string) || "application/json";
+    headers["content-type"] = ct;
+    body = typeof req.body === "string" ? req.body : JSON.stringify(req.body ?? {});
   }
 
-  // Call upstream API
-  const upstream = await fetch(url.toString(), init);
-  const contentType = upstream.headers.get("content-type") || "application/json";
-  const buf = Buffer.from(await upstream.arrayBuffer());
+  // Call the API
+  const upstream = await fetch(url.toString(), {
+    method: req.method,
+    headers,
+    body,
+  });
 
-  res.status(upstream.status).setHeader("content-type", contentType).send(buf);
+  const contentType = upstream.headers.get("content-type") || "application/json";
+  const text = await upstream.text();
+
+  // Relay response
+  res.statusCode = upstream.status;
+  res.setHeader("content-type", contentType);
+  res.end(text);
 }
