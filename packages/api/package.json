@@ -8,7 +8,8 @@
   "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
   "files": ["dist"],
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc",                // <= remove the -p to avoid TS5042 edge cases
+    "prepack": "npm run build"     // ensures dist/ exists when we pack/install
   },
   "devDependencies": {
     "typescript": "^5.5.4",
