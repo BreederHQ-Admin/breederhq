@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // Use the API *source* directly
       '@bhq/api': fileURLToPath(new URL('../../packages/api/src', import.meta.url)),
     },
   },

@@ -1,23 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@bhq/api": ["../../packages/api/src"],
-    
-
-    // Keep Vite types AND add Node for serverless functions
-    "types": ["vite/client", "node"]
-  },
-
-  // Include your UI code and the Vercel serverless functions
-  "include": ["src", "api", "vite.config.ts"]
+      "@bhq/api": ["../../packages/api/src"]
+    }
+  }
 }
