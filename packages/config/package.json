@@ -1,1 +1,5 @@
-{ "name": "@bhq/config", "version": "0.1.0", "private": true }
+{
+    "name": "@bhq/config",
+    "version": "0.1.0",
+    "private": true
+}
