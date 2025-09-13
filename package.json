@@ -2,9 +2,14 @@
   "name": "breederhq",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "packageManager": "npm@9.9.3",
-  "engines": { "node": ">=22 <23" },
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "dev:animals": "npm run dev -w @bhq/animals",
     "dev:breeding": "npm run dev -w @bhq/breeding",

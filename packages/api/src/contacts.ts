@@ -1,42 +1,17 @@
-import { http } from "./client";
-
 export type Contact = {
   id: string;
-  firstName: string | null;
-  lastName: string | null;
-  primaryEmail: string | null;
-  primaryPhone: string | null;
-  organizationCount?: number;
-  createdAt: string;
-  updatedAt: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
 };
 
-export type Paginated<T> = {
-  data: T[];
-  total: number;
-  limit: number;
-  offset: number;
-};
+import { createApiClient } from "./client";
 
-export type ListContactsParams = {
-  query?: string;
-  sort?: "name" | "createdAt" | "updatedAt";
-  order?: "asc" | "desc";
-  limit?: number;
-  offset?: number;
-};
-
-export const contacts = {
-  list(params: ListContactsParams) {
-    const qs = new URLSearchParams();
-    if (params.query) qs.set("query", params.query);
-    if (params.sort) qs.set("sort", params.sort);
-    if (params.order) qs.set("order", params.order);
-    qs.set("limit", String(params.limit ?? 25));
-    qs.set("offset", String(params.offset ?? 0));
-    return http<Paginated<Contact>>(`/api/contacts?${qs.toString()}`);
-  },
-  get(id: string) {
-    return http<Contact>(`/api/contacts/${id}`);
-  }
-};
+export function createContactsApi(baseUrl: string, adminToken?: string) {
+  const api = createApiClient({ baseUrl, adminToken });
+  return {
+    list(): Promise<Contact[]> { return api.get<Contact[]>("/contacts"); },
+    create(c: Omit<Contact, "id">): Promise<Contact> { return api.post<Contact>("/contacts", c); }
+  };
+}
