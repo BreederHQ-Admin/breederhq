@@ -1,19 +1,13 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "node:path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 6003,
-    strictPort: true,
-    proxy: {
-      "/api": {
-        target: "http://localhost:6003",
-        changeOrigin: true,
-        secure: false,
-      },
+  resolve: {
+    alias: {
+      // Use the API *source* directly
+      '@bhq/api': fileURLToPath(new URL('../../packages/api/src', import.meta.url)),
     },
   },
-  preview: { port: 6003, strictPort: true },
-});
+})
