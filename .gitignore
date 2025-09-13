@@ -3,3 +3,6 @@ dist
 .vercel
 .turbo
 *.tsbuildinfo
+
+# Always commit lockfile for reproducible installs
+!package-lock.json
