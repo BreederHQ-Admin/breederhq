@@ -1,7 +1,1 @@
-{
-  "name": "@bhq/config",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "main": "./eslint/base.cjs"
-}
+{ "name": "@bhq/config", "version": "0.1.0", "private": true }

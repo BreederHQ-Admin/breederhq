@@ -33,7 +33,7 @@ function useNumberState(key: string, initial = 0) {
   return [value, setValue] as const;
 }
 
-export default function App() {
+export default function AppContacts() {
   const [query, setQuery] = useQueryState("q", "");
   const [sort, setSort] = useQueryState("sort", "createdAt");
   const [order, setOrder] = useQueryState("order", "desc");
@@ -48,12 +48,11 @@ export default function App() {
   });
   const [active, setActive] = useState<Contact | null>(null);
 
-  // fetch page
   useEffect(() => {
     let alive = true;
     setPage((p) => ({ ...p, loading: true, error: null }));
-    api
-      .listContacts({ query, sort: sort as SortKey, order: order as SortOrder, limit, offset })
+    contacts
+      .list({ query, sort: sort as SortKey, order: order as SortOrder, limit, offset })
       .then((res) => {
         if (!alive) return;
         setPage({ rows: res.data, total: res.total, loading: false, error: null });
@@ -172,7 +171,7 @@ export default function App() {
             </button>
             <button
               onClick={() => gotoPage(currentPage - 1)}
-              className="rounded-md border border-neutral-300 px/3 py-1 text-sm hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
+              className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
               disabled={currentPage <= 1}
             >
               ‹ Prev
@@ -214,8 +213,8 @@ function ContactDrawer({ contact, onClose }: { contact: Contact | null; onClose:
   useEffect(() => {
     let alive = true;
     if (!contact) return;
-    api
-      .getContact(contact.id)
+    contacts
+      .get(contact.id)
       .then((c) => {
         if (!alive) return;
         setFull(c);

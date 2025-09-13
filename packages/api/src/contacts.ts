@@ -1,3 +1,5 @@
+import { http } from "./client";
+
 export type Contact = {
   id: string;
   firstName: string | null;
@@ -9,7 +11,12 @@ export type Contact = {
   updatedAt: string;
 };
 
-export type Paginated<T> = { data: T[]; total: number; limit: number; offset: number };
+export type Paginated<T> = {
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+};
 
 export type ListContactsParams = {
   query?: string;
@@ -18,8 +25,6 @@ export type ListContactsParams = {
   limit?: number;
   offset?: number;
 };
-
-import { http } from "./client";
 
 export const contacts = {
   list(params: ListContactsParams) {

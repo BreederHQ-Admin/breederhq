@@ -1,3 +1,4 @@
+// core HTTP helper used by all modules
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const USE_ADMIN = process.env.NEXT_PUBLIC_USE_ADMIN_TOKEN === "true";
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN;

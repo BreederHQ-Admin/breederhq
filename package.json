@@ -12,7 +12,7 @@
     "dev:contacts": "npm run dev -w apps/contacts",
     "dev:all": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
     "dev": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
-    "build": "npm run build --workspaces",
+    "build": "npm run -w @bhq/api build && npm run -w @bhq/ui build && npm run -w @bhq/contacts build",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\""
   },
