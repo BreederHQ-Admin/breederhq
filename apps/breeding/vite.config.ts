@@ -1,18 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 6005,
-    strictPort: true,
-    proxy: {
-      "/api": {
-        target: "http://localhost:6001",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+  resolve: {
+    alias: {
+      "@bhq/api": resolve(__dirname, "../../packages/api/src"),
+      "@bhq/ui": resolve(__dirname, "../../packages/ui/src"),
+      "@bhq/config": resolve(__dirname, "../../packages/config/src")
+    }
   },
-  preview: { port: 6005, strictPort: true },
+  build: {
+    outDir: "dist",
+    target: "es2020",
+    sourcemap: false
+  }
 });

@@ -1,14 +1,16 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "types": ["vite/client", "node"]
+    "baseUrl": ".",
+    "paths": {
+      "@bhq/api": ["../../packages/api/src/index.ts"],
+      "@bhq/api/*": ["../../packages/api/src/*"],
+      "@bhq/ui": ["../../packages/ui/src/index.ts"],
+      "@bhq/ui/*": ["../../packages/ui/src/*"],
+      "@bhq/config": ["../../packages/config/src/index.ts"],
+      "@bhq/config/*": ["../../packages/config/src/*"]
+    }
   },
-  "include": ["src", "api", "vite.config.ts"]
+  "include": ["src", "vite.config.ts", "index.html"]
 }
