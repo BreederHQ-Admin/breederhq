@@ -2,22 +2,26 @@
   "name": "breederhq",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
+  "packageManager": "npm@9.9.3",
+  "engines": { "node": ">=18 <22" },
   "scripts": {
     "dev:animals": "npm run dev -w @bhq/animals",
     "dev:breeding": "npm run dev -w @bhq/breeding",
     "dev:contacts": "npm run dev -w @bhq/contacts",
     "dev:all": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
     "dev": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
-    "build": "npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build"
-  }
-  {
-    "packageManager": "npm@9.9.3",
-    "engines": {
-      "node": ">=18 <22"
-    }
+    "build": "npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.2",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.4",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
   }
 }
