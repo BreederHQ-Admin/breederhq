@@ -1,4 +1,4 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./App-Offspring";
-createRoot(document.getElementById("root")!).render(<App />);
+import { AppOffspring } from "./App-offspring";
+createRoot(document.getElementById("root")!).render(<AppOffspring />);
