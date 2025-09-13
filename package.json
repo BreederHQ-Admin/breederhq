@@ -14,4 +14,10 @@
     "dev": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
     "build": "npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build"
   }
+  {
+    "packageManager": "npm@9.9.3",
+    "engines": {
+      "node": ">=18 <22"
+    }
+  }
 }

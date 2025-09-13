@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { contacts, type Contact } from "@bhq/api";
+import { contacts } from '@bhq/api'
 
 type SortKey = "name" | "createdAt" | "updatedAt";
 type SortOrder = "asc" | "desc";
