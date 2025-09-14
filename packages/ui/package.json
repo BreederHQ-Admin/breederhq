@@ -1,6 +1,33 @@
 {
   "name": "@bhq/ui",
   "version": "0.1.0",
-  "private": true,
-  "type": "module"
+  "type": "module",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles/global.css": "./src/styles/global.css"
+  },
+  "files": [
+    "dist",
+    "src/styles/global.css"
+  ],
+  "dependencies": {
+    "clsx": "^2.1.1"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "vite": "^5.4.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
 }

@@ -1,24 +1,30 @@
+// *** root/package.json ***
+
 {
   "name": "breederhq",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "packageManager": "npm@9.9.3",
   "engines": {
     "node": ">=22 <23"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev:animals": "npm run dev -w @bhq/animals",
     "dev:breeding": "npm run dev -w @bhq/breeding",
     "dev:contacts": "npm run dev -w @bhq/contacts",
     "dev:all": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
-    "dev": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
-    "build": "npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build",
+    "dev": "npm run dev:all",
+    "build": "npm run -w @bhq/config build && npm run -w @bhq/ui build && npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
-    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\"",
+    "postinstall": "npm run -w @bhq/config build && npm run -w @bhq/ui build || true"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^24.3.2",

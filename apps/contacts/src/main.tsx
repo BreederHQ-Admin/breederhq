@@ -1,9 +1,10 @@
+import "@bhq/ui/styles/global.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import AppContacts from "./App-Contacts";
+import { App } from "./App-Contacts";
 
-const root = document.getElementById("root");
-if (!root) {
-  throw new Error('Root element with id="root" not found');
-}
-createRoot(root).render(<AppContacts />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
