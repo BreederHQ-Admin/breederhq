@@ -3,38 +3,43 @@ import { createApiClient } from "@bhq/api";
 
 export function AppContacts() {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+  const healthPath = import.meta.env.VITE_API_HEALTH_PATH || "/healthz";
 
   const [rawStatus, setRawStatus] = React.useState<string>("-");
   const [clientStatus, setClientStatus] = React.useState<string>("-");
   const [lastError, setLastError] = React.useState<string>("");
 
-  async function testRaw() {
+  async function testApiHealth() {
+    const url = baseUrl.replace(/\/+$/, "") + healthPath;
+    console.log("TEST HEALTH →", url);
     setLastError("");
     setRawStatus("calling");
     try {
-      const res = await fetch(baseUrl + "/healthz");
+      const res = await fetch(url, { cache: "no-store" });
       const text = await res.text();
+      console.log("HEALTH RESPONSE", res.status, res.statusText, text);
       setRawStatus(`${res.status} ${res.statusText} :: ${text}`);
-      console.log("[RAW] Fetch", baseUrl + "/healthz", res.status, res.statusText, text);
     } catch (e: any) {
+      console.error("HEALTH ERROR", e);
       setRawStatus("error");
       setLastError(e?.message ?? String(e));
-      console.error("[RAW] Error", e);
     }
   }
 
-  async function testClient() {
+  async function testApiClient() {
+    const url = baseUrl.replace(/\/+$/, "") + healthPath;
+    console.log("TEST CLIENT →", url);
     setLastError("");
     setClientStatus("calling");
     try {
       const api = createApiClient({ baseUrl });
-      const data = await api.get<string>("/healthz");
+      const data = await api.get<string>(healthPath);
+      console.log("CLIENT RESPONSE", data);
       setClientStatus("ok :: " + JSON.stringify(data));
-      console.log("[CLIENT] OK", data);
     } catch (e: any) {
+      console.error("CLIENT ERROR", e);
       setClientStatus("error");
       setLastError(e?.message ?? String(e));
-      console.error("[CLIENT] Error", e);
     }
   }
 
@@ -43,10 +48,11 @@ export function AppContacts() {
       <h1>BreederHQ Contacts</h1>
       <p>Mode: {import.meta.env.MODE}</p>
       <p>API Base URL: <code>{baseUrl || "(empty)"}</code></p>
+      <p>Health Path: <code>{healthPath}</code></p>
 
       <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-        <button onClick={testRaw}>Test RAW /health</button>
-        <button onClick={testClient}>Test CLIENT /health</button>
+        <button onClick={testApiHealth}>Test RAW health</button>
+        <button onClick={testApiClient}>Test CLIENT health</button>
       </div>
 
       <div style={{ marginTop: 8, fontSize: 14 }}>
@@ -63,5 +69,4 @@ export function AppContacts() {
   );
 }
 
-// Provide a default export so main.tsx can import it without naming issues
 export default AppContacts;

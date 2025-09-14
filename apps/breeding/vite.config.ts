@@ -17,5 +17,15 @@ export default defineConfig({
     outDir: "dist",
     target: "es2020",
     sourcemap: false
+  },
+  server: {
+    port: 5175,
+    proxy: {
+      "/api": {
+        target: "https://breederhq-api.onrender.com",
+        changeOrigin: true,
+        rewrite: p => p.replace(/^\/api/, "")
+      }
+    }
   }
 });
