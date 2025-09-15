@@ -8,3 +8,4 @@ export * from "./adapters/contacts";
 export * from "./adapters/animals";
 export * from "./adapters/breeding";
 export * from "./adapters/offspring";
+export { default as http } from "./http";

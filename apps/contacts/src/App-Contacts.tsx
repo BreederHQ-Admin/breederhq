@@ -1,7 +1,7 @@
 import React from "react";
 import { AppShell, SidebarNav, PageHeader, Card } from "@bhq/ui";
-import { listContacts, type UiContactRow } from "@bhq/api";
-import { contactRoutes, type Route } from "./routes";
+import { http } from "@bhq/api";
+import { contactRoutes } from "./routes";
 
 function useHashPath(defaultPath: string) {
   const [path, setPath] = React.useState(() => location.hash.slice(1) || defaultPath);
@@ -14,13 +14,24 @@ function useHashPath(defaultPath: string) {
   return { path, navigate };
 }
 
+type ContactRow = {
+  id: string;
+  name: string;
+  primaryEmail?: string | null;
+  phones?: { number: string }[];
+  invoiceSummary?: {
+    latestStatus?: string | null;
+    anyOutstanding?: boolean;
+  } | null;
+};
+
 function ContactsPage() {
-  const [rows, setRows] = React.useState<UiContactRow[]>([]);
+  const [rows, setRows] = React.useState<ContactRow[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<Error | null>(null);
 
   React.useEffect(() => {
-    listContacts({ limit: 50 })
+    http.get<ContactRow[]>("/api/v1/contacts?limit=50")
       .then(setRows)
       .catch(e => setError(e as Error))
       .finally(() => setLoading(false));
@@ -49,7 +60,9 @@ function ContactsPage() {
                   <td className="py-2 px-3">{r.primaryEmail ?? "—"}</td>
                   <td className="py-2 px-3">{r.phones?.length ? r.phones.map(p => p.number).join(", ") : "—"}</td>
                   <td className="py-2 px-3">
-                    {r.invoiceSummary ? `${r.invoiceSummary.latestStatus ?? "—"}${r.invoiceSummary.anyOutstanding ? " • outstanding" : ""}` : "—"}
+                    {r.invoiceSummary
+                      ? `${r.invoiceSummary.latestStatus ?? "—"}${r.invoiceSummary.anyOutstanding ? " • outstanding" : ""}`
+                      : "—"}
                   </td>
                 </tr>
               ))}
@@ -69,7 +82,15 @@ export default function AppContacts() {
 
   return (
     <AppShell
-      sidebar={<SidebarNav items={routes.map(r => ({ label: r.label, href: `#${r.path}`, onClick: () => navigate(r.path) }))} />}
+      sidebar={
+        <SidebarNav
+          items={routes.map(r => ({
+            label: r.label,
+            href: `#${r.path}`,
+            onClick: () => navigate(r.path),
+          }))}
+        />
+      }
       content={current.element}
     />
   );
