@@ -1,5 +1,6 @@
 import React from "react";
 import { AppShell, SidebarNav, PageHeader, Card } from "@bhq/ui";
+import { api } from "./api";
 import { listAnimals, type UiAnimal } from "@bhq/api";
 import { animalRoutes, type Route } from "./routes";
 
@@ -19,9 +20,14 @@ function AnimalsPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<Error | null>(null);
 
-  React.useEffect(() => {
-    listAnimals().then(setRows).catch(e => setError(e as Error)).finally(() => setLoading(false));
-  }, []);
+React.useEffect(() => {
+  let active = true;
+  api.animals.list()
+    .then(data => { if (active) setRows(data); })
+    .catch(e => { if (active) setError(e as Error); })
+    .finally(() => { if (active) setLoading(false); });
+  return () => { active = false; };
+}, []);
 
   return (
     <div className="p-6 space-y-4">

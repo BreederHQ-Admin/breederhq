@@ -1,7 +1,6 @@
-// Keep tiny placeholder if you need it
+// Public entrypoint for @bhq/ui — named exports only, no defaults.
 export const Placeholder = () => null;
 
-// Re-export every component as named
 export * from "./components/AppShell";
 export * from "./components/PageHeader";
 export * from "./components/Card";

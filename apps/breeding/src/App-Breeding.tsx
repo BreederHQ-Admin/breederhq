@@ -1,6 +1,7 @@
 import React from "react";
 import { AppShell, SidebarNav, PageHeader, Card, Button } from "@bhq/ui";
-import { listPlans, type UiBreedingPlan } from "@bhq/api";
+import { api } from "./api";
+import type { UiBreedingPlan } from "@bhq/api";
 import { breedingRoutes, type Route } from "./routes";
 
 function useHashPath(defaultPath: string) {
@@ -90,9 +91,14 @@ export default function AppBreeding() {
   const [error, setError] = React.useState<Error | null>(null);
   const { path, navigate } = useHashPath("/breeding/plans");
 
-  React.useEffect(() => {
-    listPlans().then(setPlans).catch(e => setError(e as Error)).finally(() => setLoading(false));
-  }, []);
+React.useEffect(() => {
+  setLoading(true);
+  api.breeding
+    .listPlans()
+    .then(setPlans)
+    .catch((e: unknown) => setError(e as Error))
+    .finally(() => setLoading(false));
+}, []);
 
   const pages = {
     Plans:    loading || error ? <Status loading={loading} error={error} /> : <PlansTable plans={plans} />,

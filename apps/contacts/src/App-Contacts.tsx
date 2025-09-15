@@ -1,6 +1,6 @@
 import React from "react";
 import { AppShell, SidebarNav, PageHeader, Card } from "@bhq/ui";
-import { http } from "@bhq/api";
+import { api } from "./api";
 import { contactRoutes } from "./routes";
 
 function useHashPath(defaultPath: string) {
@@ -19,10 +19,7 @@ type ContactRow = {
   name: string;
   primaryEmail?: string | null;
   phones?: { number: string }[];
-  invoiceSummary?: {
-    latestStatus?: string | null;
-    anyOutstanding?: boolean;
-  } | null;
+  invoiceSummary?: { latestStatus?: string | null; anyOutstanding?: boolean } | null;
 };
 
 function ContactsPage() {
@@ -33,6 +30,7 @@ function ContactsPage() {
   React.useEffect(() => {
     http.get<ContactRow[]>("/api/v1/contacts?limit=50")
       .then(setRows)
+      api.contacts.list(50).then(setRows)
       .catch(e => setError(e as Error))
       .finally(() => setLoading(false));
   }, []);
@@ -40,10 +38,12 @@ function ContactsPage() {
   return (
     <div className="p-6 space-y-4">
       <PageHeader title="Contacts" subtitle="People you work with" />
-      <Card className="bhq-glass bhq-shadow-stack p-0">
-        {loading ? <div className="p-6 text-sm text-neutral-400">Loading…</div>
-        : error ? <div className="p-6 text-sm text-red-400">Error: {error.message}</div>
-        : (
+      <Card className="p-0">
+        {loading ? (
+          <div className="p-6 text-sm text-neutral-400">Loading…</div>
+        ) : error ? (
+          <div className="p-6 text-sm text-red-400">Error: {error.message}</div>
+        ) : (
           <table className="u-table-dense w-full">
             <thead>
               <tr className="text-left text-xs text-neutral-400">
