@@ -1,0 +1,6 @@
+// packages/ui/.eslintrc.json
+{
+  "rules": {
+    "import/no-default-export": "error"
+  }
+}

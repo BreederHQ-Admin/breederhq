@@ -1,3 +1,4 @@
+import "./bootstrapFetch";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import AppAnimals from "./App-Animals";
