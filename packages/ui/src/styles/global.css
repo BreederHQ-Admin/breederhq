@@ -1,77 +1,67 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* packages/ui/src/styles/global.css */
 
+/* Tailwind v4 entry */
+@import "tailwindcss";
+
+/* Tokens */
 :root {
-  --bg: 248 249 251;
+  --bg: 246 247 250;
   --bg-elevated: 255 255 255;
-  --bg-soft: 244 246 248;
+  --bg-soft: 244 245 248;
 
-  --fg: 23 23 24;
-  --fg-muted: 83 87 91;
-  --fg-subtle: 120 124 130;
+  --fg: 18 20 23;
+  --fg-muted: 95 99 104;
+  --fg-subtle: 130 135 142;
   --fg-invert: 255 255 255;
 
-  --brand: 115 99 245;
+  --brand: 122 82 255;
   --brand-fg: 255 255 255;
   --brand-soft: 235 235 255;
   --brand-ring: 147 134 255;
 
   --surface: 255 255 255;
   --surface-hover: 247 248 251;
-  --surface-border: 225 228 233;
+  --surface-border: 221 225 232;
 
-  --danger: 222 68 55;
+  --danger: 239 68 68;
   --warning: 245 158 11;
   --success: 16 185 129;
   --info: 59 130 246;
 }
 
 [data-theme="dark"] {
-  --bg: 16 18 22;
-  --bg-elevated: 24 26 32;
-  --bg-soft: 20 22 27;
+  --bg: 12 14 18;
+  --bg-elevated: 18 20 26;
+  --bg-soft: 16 18 22;
 
-  --fg: 236 237 240;
-  --fg-muted: 178 182 189;
-  --fg-subtle: 136 140 147;
-  --fg-invert: 16 18 22;
+  --fg: 234 236 240;
+  --fg-muted: 166 172 182;
+  --fg-subtle: 132 138 148;
+  --fg-invert: 12 14 18;
 
-  --brand: 139 128 255;
+  --brand: 150 130 255;
   --brand-fg: 16 18 22;
   --brand-soft: 37 39 51;
   --brand-ring: 162 152 255;
 
-  --surface: 26 28 34;
+  --surface: 22 24 30;
   --surface-hover: 30 32 39;
-  --surface-border: 54 58 66;
-
-  --danger: 242 97 86;
-  --warning: 234 179 8;
-  --success: 52 211 153;
-  --info: 96 165 250;
+  --surface-border: 60 66 78;
 }
 
+/* Base */
 html { color-scheme: light dark; }
-body {
-  @apply bg-bg text-fg antialiased;
-  font-feature-settings: "ss01" on, "cv01" on, "calt" on;
-}
+body { @apply bg-bg text-fg antialiased; }
 
-.prose-bhq h1 { @apply text-3xl md:text-4xl font-semibold tracking-tight; }
-.prose-bhq h2 { @apply text-2xl md:text-3xl font-semibold mt-8 mb-3; }
-.prose-bhq h3 { @apply text-xl md:text-2xl font-semibold mt-6 mb-2; }
+/* Typography rhythm */
+.prose-bhq h1 { @apply text-3xl font-semibold; letter-spacing: -0.025em; }
+.prose-bhq h2 { @apply text-2xl font-semibold mt-8 mb-3; }
+.prose-bhq h3 { @apply text-xl font-semibold mt-6 mb-2; }
 .prose-bhq p  { @apply leading-7 text-fg-muted; }
 
+/* Focus */
 :focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgb(var(--brand-ring) / 0.6);
   border-radius: 0.5rem;
 }
-
-.surface { @apply bg-surface border border-surface-border shadow; }
-.card    { @apply surface rounded-lg p-4 md:p-6; }
-
-* { scrollbar-width: thin; scrollbar-color: rgb(var(--surface-border)) transparent; }
-*::-webkit-scrollbar { height: 10px; width: 10px; }
-*::-webkit-scrollbar-thumb { background: rgb(var(--surface-border)); border-radius: 8px; }

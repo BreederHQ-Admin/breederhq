@@ -1,31 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@bhq/api": resolve(__dirname, "../../packages/api/src"),
-      "@bhq/ui": resolve(__dirname, "../../packages/ui/src"),
-      "@bhq/config": resolve(__dirname, "../../packages/config/src")
-    }
+      "@bhq/ui": fileURLToPath(new URL("../../packages/ui/src", import.meta.url)),
+      "@bhq/config": fileURLToPath(new URL("../../packages/config/src", import.meta.url)),
+      "@bhq/api": fileURLToPath(new URL("../../packages/api/src", import.meta.url)),
+    },
   },
-  build: {
-    outDir: "dist",
-    target: "es2020",
-    sourcemap: false
-  },
-  server: {
-    port: 5173,
-    proxy: {
-      "/api": {
-        target: "https://breederhq-api.onrender.com",
-        changeOrigin: true,
-        rewrite: p => p.replace(/^\/api/, "")
-      }
-    }
-  }
+  server: { port: 6173, strictPort: true },
 });

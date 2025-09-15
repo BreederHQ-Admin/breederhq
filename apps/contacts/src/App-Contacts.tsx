@@ -1,18 +1,76 @@
-import { AppShell, PageHeader, ThemeToggle, Button, Card } from "@bhq/ui";
+import React from "react";
+import { AppShell, SidebarNav, PageHeader, Card } from "@bhq/ui";
+import { listContacts, type UiContactRow } from "@bhq/api";
+import { contactRoutes, type Route } from "./routes";
 
-export default function App() {
+function useHashPath(defaultPath: string) {
+  const [path, setPath] = React.useState(() => location.hash.slice(1) || defaultPath);
+  React.useEffect(() => {
+    const onHash = () => setPath(location.hash.slice(1) || defaultPath);
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [defaultPath]);
+  const navigate = (to: string) => { location.hash = to; };
+  return { path, navigate };
+}
+
+function ContactsPage() {
+  const [rows, setRows] = React.useState<UiContactRow[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<Error | null>(null);
+
+  React.useEffect(() => {
+    listContacts({ limit: 50 })
+      .then(setRows)
+      .catch(e => setError(e as Error))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
-    <AppShell title="BreederHQ" headerSlot={<ThemeToggle />}>
-      <PageHeader
-        title="Contacts"
-        subtitle="Manage people across your breeding programs"
-        actions={<Button>New Contact</Button>}
-      />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <div className="text-sm text-fg-muted">Example card content</div>
-        </Card>
-      </div>
-    </AppShell>
+    <div className="p-6 space-y-4">
+      <PageHeader title="Contacts" subtitle="People you work with" />
+      <Card className="bhq-glass bhq-shadow-stack p-0">
+        {loading ? <div className="p-6 text-sm text-neutral-400">Loading…</div>
+        : error ? <div className="p-6 text-sm text-red-400">Error: {error.message}</div>
+        : (
+          <table className="u-table-dense w-full">
+            <thead>
+              <tr className="text-left text-xs text-neutral-400">
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Email</th>
+                <th className="py-2 px-3">Phones</th>
+                <th className="py-2 px-3">Invoices</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(r => (
+                <tr key={r.id} className="border-t border-white/10">
+                  <td className="py-2 px-3">{r.name}</td>
+                  <td className="py-2 px-3">{r.primaryEmail ?? "—"}</td>
+                  <td className="py-2 px-3">{r.phones?.length ? r.phones.map(p => p.number).join(", ") : "—"}</td>
+                  <td className="py-2 px-3">
+                    {r.invoiceSummary ? `${r.invoiceSummary.latestStatus ?? "—"}${r.invoiceSummary.anyOutstanding ? " • outstanding" : ""}` : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+export default function AppContacts() {
+  const pages = { ContactsPage: <ContactsPage /> };
+  const routes = contactRoutes(pages);
+  const { path, navigate } = useHashPath("/contacts");
+  const current = routes.find(r => r.path === path) ?? routes[0];
+
+  return (
+    <AppShell
+      sidebar={<SidebarNav items={routes.map(r => ({ label: r.label, href: `#${r.path}`, onClick: () => navigate(r.path) }))} />}
+      content={current.element}
+    />
   );
 }

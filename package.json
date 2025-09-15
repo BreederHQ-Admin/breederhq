@@ -1,5 +1,3 @@
-// *** root/package.json ***
-
 {
   "name": "breederhq",
   "version": "0.1.0",
@@ -13,26 +11,34 @@
     "packages/*"
   ],
   "scripts": {
+    "dev:contacts": "npm run dev -w @bhq/contacts",
     "dev:animals": "npm run dev -w @bhq/animals",
     "dev:breeding": "npm run dev -w @bhq/breeding",
-    "dev:contacts": "npm run dev -w @bhq/contacts",
-    "dev:all": "concurrently \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:contacts\"",
+    "dev:offspring": "npm run dev -w @bhq/offspring",
+    "dev:all": "concurrently \"npm run dev:contacts\" \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:offspring\"",
     "dev": "npm run dev:all",
-    "build": "npm run -w @bhq/config build && npm run -w @bhq/ui build && npm run -w @bhq/api build && npm run -w @bhq/contacts build && npm run -w @bhq/animals build && npm run -w @bhq/breeding build",
+    "build": "npm run -w @bhq/config build --if-present && npm run -w @bhq/ui build --if-present && npm run -w @bhq/api build --if-present && npm run -w @bhq/contacts build --if-present && npm run -w @bhq/animals build --if-present && npm run -w @bhq/breeding build --if-present",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\"",
-    "postinstall": "npm run -w @bhq/config build && npm run -w @bhq/ui build || true"
+    "postinstall": "npm run -w @bhq/config build --if-present && npm run -w @bhq/ui build --if-present"
   },
   "dependencies": {
     "clsx": "^2.1.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.3.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "autoprefixer": "^10.4.21",
     "concurrently": "^8.2.2",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.4",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.5.6",
     "prettier": "^3.3.3",
+    "tailwindcss": "^4.1.13",
     "typescript": "^5.5.4"
   }
 }

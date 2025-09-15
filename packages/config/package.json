@@ -1,5 +1,22 @@
 {
-    "name": "@bhq/config",
-    "version": "0.1.0",
-    "private": true
+  "name": "@bhq/config",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "main": "dist/tailwind-preset.js",
+  "types": "dist/tailwind-preset.d.ts",
+  "exports": {
+    "./tailwind-preset": {
+      "import": "./dist/tailwind-preset.js",
+      "types": "./dist/tailwind-preset.d.ts"
+    },
+    "./postcss.config.cjs": "./postcss.config.cjs"
+  },
+  "files": ["dist", "postcss.config.cjs"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
 }

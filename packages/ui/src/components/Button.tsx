@@ -1,24 +1,18 @@
 import React from "react";
 import clsx from "clsx";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
+type Variant = "primary" | "ghost";
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant };
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: Variant;
+const base =
+  "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-neutral-400 disabled:opacity-50";
+const variants: Record<Variant, string> = {
+  primary:
+    "bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white",
+  ghost:
+    "bg-transparent text-neutral-900 hover:bg-neutral-100 dark:text-neutral-50 dark:hover:bg-neutral-800",
 };
 
-export function Button({ className, variant = "primary", ...props }: Props) {
-  const base =
-    "inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
-
-  const map: Record<Variant, string> = {
-    primary: "bg-brand text-brand-fg hover:bg-brand/90 focus-visible:ring-brand",
-    secondary: "bg-surface text-fg hover:bg-surface-hover border border-surface-border",
-    outline: "bg-transparent text-fg border border-surface-border hover:bg-surface",
-    ghost: "bg-transparent text-fg-muted hover:bg-surface",
-    danger: "bg-danger/90 text-fg-invert hover:bg-danger",
-  };
-
-  return <button className={clsx(base, map[variant], className)} {...props} />;
-}
+export const Button: React.FC<Props> = ({ className, variant = "primary", ...props }) => {
+  return <button className={clsx(base, variants[variant], className)} {...props} />;
+};

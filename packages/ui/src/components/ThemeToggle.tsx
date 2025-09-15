@@ -1,37 +1,28 @@
 import React from "react";
 
-function setTheme(next: "light" | "dark") {
-  const root = document.documentElement;
-  if (next === "dark") root.setAttribute("data-theme", "dark");
-  else root.removeAttribute("data-theme");
-  localStorage.setItem("bhq-theme", next);
-}
-
-function getInitialTheme(): "light" | "dark" {
-  const saved = localStorage.getItem("bhq-theme");
-  if (saved === "light" || saved === "dark") return saved;
-  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
-}
-
-export default function ThemeToggle() {
-  const [mode, setMode] = React.useState<"light" | "dark">("light");
+export const ThemeToggle: React.FC = () => {
+  const [mode, setMode] = React.useState<"light" | "dark">(() =>
+    document.documentElement.classList.contains("dark") ? "dark" : "light"
+  );
 
   React.useEffect(() => {
-    setMode(getInitialTheme());
-  }, []);
-
-  React.useEffect(() => {
-    setTheme(mode);
+    const root = document.documentElement;
+    if (mode === "dark") {
+      root.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      root.removeAttribute("data-theme");
+    }
   }, [mode]);
 
   return (
     <button
       onClick={() => setMode(mode === "dark" ? "light" : "dark")}
-      className="h-8 rounded-md border border-surface-border bg-surface px-2 text-sm text-fg-muted hover:bg-surface-hover"
+      className="h-9 rounded-md border border-neutral-300 bg-white px-3 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800"
       title="Toggle theme"
     >
       {mode === "dark" ? "Dark" : "Light"}
     </button>
   );
-}
+};

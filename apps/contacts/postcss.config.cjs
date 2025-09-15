@@ -1,1 +1,6 @@
-module.exports = require("@bhq/config/postcss.config.cjs");
+module.exports = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+    autoprefixer: {},
+  },
+};
