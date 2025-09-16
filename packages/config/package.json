@@ -2,7 +2,7 @@
   "name": "@bhq/config",
   "version": "0.1.0",
   "type": "module",
-  "private": false,
+  "private": true,
   "main": "dist/tailwind-preset.js",
   "types": "dist/tailwind-preset.d.ts",
   "exports": {
@@ -14,9 +14,7 @@
   },
   "files": ["dist", "postcss.config.cjs"],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "clean": "rimraf dist"
+    "build": "echo \"@bhq/config no build needed\""
   },
   "devDependencies": {
     "typescript": "workspace:^"
