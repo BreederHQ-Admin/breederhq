@@ -17,10 +17,10 @@
     "dev:offspring": "npm run dev -w @bhq/offspring",
     "dev:all": "concurrently \"npm run dev:contacts\" \"npm run dev:animals\" \"npm run dev:breeding\" \"npm run dev:offspring\"",
     "dev": "npm run dev:all",
-    "build": "npm run -w @bhq/config build --if-present && npm run -w @bhq/ui build --if-present && npm run -w @bhq/api build --if-present && npm run -w @bhq/contacts build --if-present && npm run -w @bhq/animals build --if-present && npm run -w @bhq/breeding build --if-present",
+    "build": "echo \"root build noop\"",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\"",
-    "postinstall": "npm run -w @bhq/config build --if-present && npm run -w @bhq/ui build --if-present"
+    "postinstall": "echo \"root postinstall: no builds here\""
   },
   "dependencies": {
     "clsx": "^2.1.1"
