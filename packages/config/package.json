@@ -17,6 +17,6 @@
     "build": "echo \"@bhq/config no build needed\""
   },
   "devDependencies": {
-    "typescript": "workspace:^"
+    "typescript": "^5.5.4"
   }
 }
